@@ -4,6 +4,59 @@ Step-by-step guide for running the CDC prototype on an AWS EC2 instance.
 
 > **Important**: Use a personal AWS account, not a company account.
 
+## Terraform (Recommended)
+
+The fastest way to get running. Terraform provisions the instance, installs Docker, clones the repo, and runs `setup.sh` automatically — you SSH in and it's ready.
+
+### Prerequisites
+
+- [Terraform](https://developer.hashicorp.com/terraform/install) installed
+- AWS credentials configured (`aws configure` or environment variables)
+- Your public IP (find it at https://checkip.amazonaws.com)
+
+### Steps
+
+```bash
+cd terraform
+
+# Create your tfvars file
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars — set allowed_ip to your IP
+
+terraform init
+terraform plan      # Review what will be created
+terraform apply     # Provision everything (takes ~5 minutes)
+```
+
+Terraform outputs your SSH command and Kafka UI URL when it finishes:
+
+```
+ssh_command  = "ssh -i ./cdc-prototype-key.pem ec2-user@3.10.x.x"
+kafka_ui_url = "http://3.10.x.x:8080"
+```
+
+Wait a few minutes for cloud-init to complete, then SSH in and check:
+
+```bash
+# Check if setup finished
+cat ~/setup-complete.txt
+
+# Verify containers are running
+cd tm-lending-cdc-prototype && docker compose ps
+```
+
+### Teardown
+
+```bash
+terraform destroy   # Removes instance, security group, and key pair
+```
+
+---
+
+## Manual Setup
+
+The steps below walk through manual EC2 setup if you prefer not to use Terraform.
+
 ## 1. Launch an EC2 Instance
 
 - **Region**: eu-west-2 (London)

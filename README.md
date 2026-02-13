@@ -141,6 +141,8 @@ bash scripts/teardown.sh       # Stop and remove everything
 
 See [docs/EC2-SETUP.md](docs/EC2-SETUP.md) for a step-by-step guide to run this on a t3.large instance in eu-west-2 (London). Cost is approximately $0.08/hour on-demand.
 
+**Terraform (recommended):** `cd terraform && terraform init && terraform apply` — provisions the instance, installs Docker, and runs setup automatically. See the [Terraform section](docs/EC2-SETUP.md#terraform-recommended) for details.
+
 ## Further Documentation
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Component relationships and mapping to real Tandem architecture

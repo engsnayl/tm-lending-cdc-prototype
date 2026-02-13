@@ -44,10 +44,8 @@ echo ""
 echo "Kafka Connect is ready."
 echo ""
 
-echo "Registering Debezium connectors..."
-bash connectors/register-transaction-connector.sh
-sleep 2
-bash connectors/register-agreement-connector.sh
+echo "Registering Debezium CDC connector..."
+bash connectors/register-connector.sh
 echo ""
 
 echo "============================================"

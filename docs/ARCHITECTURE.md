@@ -86,12 +86,12 @@ Each Kafka message from Debezium contains:
 
 ## Connector Configuration
 
-Two separate Debezium connectors are registered:
+A single Debezium connector (**sentinel-cdc-connector**) watches both tables:
 
-1. **sentinel-transaction-connector**: Watches `dbo.Transaction`, publishes to `sentinel.SentinelMock.dbo.Transaction`
-2. **sentinel-agreement-connector**: Watches `dbo.Agreement`, publishes to `sentinel.SentinelMock.dbo.Agreement`
+- `dbo.Transaction` → publishes to `sentinel.SentinelMock.dbo.Transaction`
+- `dbo.Agreement` → publishes to `sentinel.SentinelMock.dbo.Agreement`
 
-Using separate connectors per table allows independent scaling, monitoring, and failure isolation.
+A single connector is used because two connectors sharing the same `topic.prefix` on the same Kafka Connect worker cause JMX MBean name collisions. In production (separate workers per connector), separate connectors per table would allow independent scaling and failure isolation. The per-table connector scripts are kept in `connectors/` for reference.
 
 ## Network Topology
 
